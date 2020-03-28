@@ -10,14 +10,22 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using ProxyKit;
 
 namespace staofeatureexplorer
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IWebHostEnvironment env)
         {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables()
+                .AddUserSecrets<Startup>();
+
+            Configuration = builder.Build();          
         }
 
         public IConfiguration Configuration { get; }
@@ -26,6 +34,7 @@ namespace staofeatureexplorer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddProxy();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -33,8 +42,15 @@ namespace staofeatureexplorer
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                app.UseDeveloperExceptionPage();            
             }
+            
+
+            // https://localhost:5001/proxy/Types?lang=de
+            app.Map("/proxy", appBuilder => appBuilder.RunProxy(context => context
+                 .ForwardTo("https://places.post.ch/StandortSuche/StaoCacheService")
+                 .AddXForwardedHeaders()
+                 .Send()));
 
             app.UseHttpsRedirection();
 
@@ -46,6 +62,8 @@ namespace staofeatureexplorer
             {
                 endpoints.MapControllers();
             });
+
+            app.UseStaticFiles();
         }
     }
 }

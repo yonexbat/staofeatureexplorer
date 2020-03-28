@@ -1,8 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>19330935-bc34-4237-b80e-5b35a407d1a7</UserSecretsId>
   </PropertyGroup>
-
-
+  <ItemGroup>
+    <PackageReference Include="ProxyKit" Version="2.3.2" />
+  </ItemGroup>
 </Project>
