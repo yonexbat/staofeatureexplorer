@@ -13,7 +13,6 @@ googlemapsstuff = {
 getApiKeyAndDownloadGoogleMapsModule();
 
 async function getApiKeyAndDownloadGoogleMapsModule() {
-    debugger;
     var apiKey = await getApiKey();
     var script = document.createElement('script');
     script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;

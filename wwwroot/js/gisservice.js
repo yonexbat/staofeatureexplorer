@@ -1,3 +1,5 @@
+import { getJson } from "./httpclient.js";
+
 export class GisService {
 
     constructor() {
@@ -17,8 +19,7 @@ export class GisService {
         const tagsEncoded = encodeURIComponent(tags);
         
         var url = `${this.baseurl}/Find?query=${tagsEncoded}&clusterdist=6&lang=en&extent=${extent}&autoexpand=false&maxpois=150&agglevel=0&encoding=UTF-8`;
-        var respone = await fetch(url);
-        var obj = await respone.json();
+        var obj = await getJson(url);
         var flattened = this.flatten(obj);
         
         // Convert to map.
@@ -50,8 +51,7 @@ export class GisService {
         const tagsEncoded = encodeURIComponent(tags);
         const queryEncoded = encodeURIComponent(query);
         var url = `${this.baseurl}/Geocode?query=${queryEncoded}&start=0&pois=${tagsEncoded}&lang=en&limit=100&encoding=UTF-8`;
-        var respone = await fetch(url);
-        var obj = await respone.json();
+        var obj = await getJson(url);
         const res = obj.locations.filter(x => {
             return x !== null && x.pt !== null ;
         });

@@ -1,6 +1,7 @@
 
 import { GisService } from './gisservice.js';
 import { UiBridge } from './uibridge.js';
+import { getJson } from './httpclient.js';
 
 export class GoogleStaoMap {
 
@@ -12,7 +13,7 @@ export class GoogleStaoMap {
 
     async initialize() {
 
-        const mapStyles = await this.loadMapStyles();
+        const mapStyles = await getJson('googlemapstyle.json');
 
         this.map = new google.maps.Map(this.uiBridge.getMapDiv(), {
             center: { lat: 47.068978, lng: 7.623838 },
@@ -95,12 +96,5 @@ export class GoogleStaoMap {
         });
     }
 
-
-    async loadMapStyles() {
-        var url = `googlemapstyle.json`;
-        var respone = await fetch(url);
-        var obj = await respone.json();
-        return obj;
-    }
 
 }
