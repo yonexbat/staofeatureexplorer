@@ -24,6 +24,18 @@ export class UiBridge {
         document.getElementById('numhits').innerHTML = '' + val;
     }
 
+    setError(val) {
+        const elem = document.getElementById('outputelem');
+        elem.innerHTML = '' + val;
+        elem.classList.add('error');
+    }
+
+    setResult(val){
+        const elem = document.getElementById('outputelem');
+        elem.innerHTML = '' + val;
+        elem.classList.remove('error');
+    }
+
     getGeoCodeButton(){
         return document.getElementById('querygeocodebutton');
     }

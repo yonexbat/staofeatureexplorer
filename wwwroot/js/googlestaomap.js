@@ -37,6 +37,7 @@ export class GoogleStaoMap {
         const query = this.uiBridge.getGeocodeVal();
         const res = await this.gisservice.geocode(query, tags);
         this.uiBridge.setNumResults(res.length);
+        this.uiBridge.setResult(JSON.stringify(res));
         if (res.length > 0) {
             const first = res[0];
             const pt = first.pt;
@@ -108,6 +109,7 @@ export class GoogleStaoMap {
     }
 
     markerClicked(poi) {
+        this.uiBridge.setResult(JSON.stringify(poi));
         const poiInfo = JSON.stringify(poi);
         console.log(`marker clicked ${poiInfo}`);
         

@@ -33,14 +33,15 @@ export class GisService {
         const dataMap = new Map();
         obj.aggregates.forEach(agg => {
             agg.icontype = 'aggregate';
-            dataMap.set(agg.key, agg);
+            agg.id = agg.key;
+            dataMap.set(agg.id, agg);
         });
         return dataMap;
     }
 
     pois(obj){
 
-        var flattened = this.flatten(obj);
+        var flattened = this.handlePois(obj);
         
         // Convert to map.
         const dataMap = new Map();
@@ -51,14 +52,15 @@ export class GisService {
         return dataMap;
     }
 
-    flatten(poisObj) {
+    handlePois(poisObj) {
         var flattened = [];
         if (poisObj.pois) {
-            poisObj.pois.forEach(element => {
+            poisObj.pois.forEach(element => {                
                 if(element.pois) {
+                    const len = element.pois.length;
                     element.icontype = 'cluster';
                     element.id = `${element.x},${element.y}`
-                    element.name = 'cluster';
+                    element.name = `cluster: ${len}`;
                 } else {
                     element.icontype = 'poi';
                 }
