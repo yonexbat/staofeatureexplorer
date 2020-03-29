@@ -1,5 +1,4 @@
 import { getJson } from "./httpclient.js";
-
 export class GisService {
 
     constructor() {
@@ -20,6 +19,26 @@ export class GisService {
         
         var url = `${this.baseurl}/Find?query=${tagsEncoded}&clusterdist=6&lang=en&extent=${extent}&autoexpand=false&maxpois=150&agglevel=0&encoding=UTF-8`;
         var obj = await getJson(url);
+
+        if(obj.pois) {
+            return this.pois(obj);
+        } else if(obj.aggregates) {
+            return this.aggregates(obj);
+        }  else {
+            throw new Error('Both are undefined, aggregates and poi. Something is wrong');
+        }    
+    }
+
+    aggregates(obj) {
+        const dataMap = new Map();
+        obj.aggregates.forEach(agg => {
+            dataMap.set(agg.key, agg);
+        });
+        return dataMap;
+    }
+
+    pois(obj){
+
         var flattened = this.flatten(obj);
         
         // Convert to map.

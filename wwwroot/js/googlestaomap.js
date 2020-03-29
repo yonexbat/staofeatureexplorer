@@ -2,6 +2,7 @@
 import { GisService } from './gisservice.js';
 import { UiBridge } from './uibridge.js';
 import { getJson } from './httpclient.js';
+import { createIcon } from './posticons.js';
 
 export class GoogleStaoMap {
 
@@ -32,7 +33,6 @@ export class GoogleStaoMap {
     }
 
     async geocodeClicked() {
-        console.log('geocode clicked');
         const tags = this.uiBridge.getTagsVal();
         const query = this.uiBridge.getGeocodeVal();
         const res = await this.gisservice.geocode(query, tags);
@@ -86,15 +86,31 @@ export class GoogleStaoMap {
     }
 
     createmarker(poi) {
-        const iconurl = `marker.png`;
+        const icon = createIcon(poi);
         const location = { lat: poi.y, lng: poi.x };
-        return new google.maps.Marker({
+        const label = this.createLabel(poi);
+        const marker =  new google.maps.Marker({
             position: location,
-            label: poi.name,
-            icon: iconurl,
+            label: label,
+            icon: icon,
             map: this.map,
         });
+        marker.addListener('click', () => this.markerClicked(poi));
+        return marker;
     }
 
+    createLabel(poi){
+        const name = poi.name;
+        return {
+            text: name,
+            color: 'yellow',
+        };
+    }
+
+    markerClicked(poi) {
+        const poiInfo = JSON.stringify(poi);
+        console.log(`marker clicked ${poiInfo}`);
+        
+    }
 
 }
