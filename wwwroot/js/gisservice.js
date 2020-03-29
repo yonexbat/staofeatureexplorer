@@ -5,19 +5,20 @@ export class GisService {
         this.baseurl = `/proxy`;
     }
 
-    async find(bounds, tags) {
+    async find(findobj) {
 
-        const northeast = bounds.getNorthEast();
-        const southwest = bounds.getSouthWest();
+        const northeast = findobj.bounds.getNorthEast();
+        const southwest = findobj.bounds.getSouthWest();
         const lon1 = southwest.lng();
         const lon2 = northeast.lng();
         const lat1 = southwest.lat();
         const lat2 = northeast.lat();
         const separator = encodeURIComponent(',');
         const extent = `${lon1}${separator}${lat1}${separator}${lon2}${separator}${lat2}`;
-        const tagsEncoded = encodeURIComponent(tags);
+        const tagsEncoded = encodeURIComponent(findobj.tags);
+        const clusterdist = findobj.clusterdist;
         
-        var url = `${this.baseurl}/Find?query=${tagsEncoded}&clusterdist=6&lang=en&extent=${extent}&autoexpand=false&maxpois=150&agglevel=0&encoding=UTF-8`;
+        var url = `${this.baseurl}/Find?query=${tagsEncoded}&clusterdist=${clusterdist}&lang=en&extent=${extent}&autoexpand=false&maxpois=150&agglevel=0&encoding=UTF-8`;
         var obj = await getJson(url);
 
         if(obj.pois) {
@@ -27,6 +28,12 @@ export class GisService {
         }  else {
             throw new Error('Both are undefined, aggregates and poi. Something is wrong');
         }    
+    }
+
+    async getTags() {
+        var url = `${this.baseurl}/Types?lang=de`;
+        const res = await getJson(url);
+        return res;
     }
 
     aggregates(obj) {

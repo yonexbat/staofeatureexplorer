@@ -16,6 +16,14 @@ export class UiBridge {
         return document.getElementById('map');
     }
 
+    getclusterDistInputElement(){
+        return document.getElementById('clusterdist');
+    }
+
+    getClusterDistVal(){
+        return this.getclusterDistInputElement().value;
+    }
+
     getGeocodeVal() {
         return document.getElementById('querygeocode').value;
     }
@@ -38,5 +46,9 @@ export class UiBridge {
 
     getGeoCodeButton(){
         return document.getElementById('querygeocodebutton');
+    }
+
+    getTagsbutton() {
+        return document.getElementById('gettagsbutton');
     }
 }

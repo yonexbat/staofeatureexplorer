@@ -28,8 +28,17 @@ export class GoogleStaoMap {
             this.mapChanged();
         });
 
-        this.uiBridge.getGeoCodeButton().addEventListener('click', () => this.geocodeClicked());
+        this.uiBridge.getclusterDistInputElement().addEventListener('blur', () => {
+            this.mapChanged();
+        });
 
+        this.uiBridge.getGeoCodeButton().addEventListener('click', () => this.geocodeClicked());
+        this.uiBridge.getTagsbutton().addEventListener('click', () => this.getTagsClicked());        
+    }
+
+    async getTagsClicked(){
+        const res = await this.gisservice.getTags();  
+        this.uiBridge.setResult(JSON.stringify(res));   
     }
 
     async geocodeClicked() {
@@ -60,7 +69,14 @@ export class GoogleStaoMap {
         }
 
         const tags = this.uiBridge.getTagsVal();
-        const dataMap = await this.gisservice.find(bounds, tags);
+        const clusterdist = this.uiBridge.getClusterDistVal();
+        const findobj = {
+            bounds: bounds,
+            tags: tags,
+            clusterdist: clusterdist,
+        };
+
+        const dataMap = await this.gisservice.find(findobj);
 
         // Marker entfernen, welche nicht mehr auf der Karte sind
         const markersToRemove = [];
