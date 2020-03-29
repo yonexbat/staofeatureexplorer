@@ -1,17 +1,29 @@
 export function createIcon(poi) {
-    const type = poi.type;
+    const type = poi.icontype;
     switch(type) {
-        case 'T12':
-            return goldMarker();
+        case 'aggregate':
+            return aggregateMarker();
+        case 'cluster':
+            return clusterMarker();
+        case 'poi':
+            return poiMarker();
         default:
-            return simpleMarker();
+            return goldMarker();
     }
 }
 
 
 
-function simpleMarker() {
-    return `marker.png`;
+function poiMarker() {
+    return `/markers/poi.png`;
+}
+
+function clusterMarker() {
+    return `/markers/cluster.png`;
+}
+
+function aggregateMarker() {
+    return `/markers/aggregate.png`;
 }
 
 function goldMarker() {

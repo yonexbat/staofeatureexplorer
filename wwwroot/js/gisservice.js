@@ -32,6 +32,7 @@ export class GisService {
     aggregates(obj) {
         const dataMap = new Map();
         obj.aggregates.forEach(agg => {
+            agg.icontype = 'aggregate';
             dataMap.set(agg.key, agg);
         });
         return dataMap;
@@ -54,13 +55,14 @@ export class GisService {
         var flattened = [];
         if (poisObj.pois) {
             poisObj.pois.forEach(element => {
-                if (element.pois) {
-                    element.pois.forEach(innerElement => {
-                        flattened.push(innerElement);
-                    });
+                if(element.pois) {
+                    element.icontype = 'cluster';
+                    element.id = `${element.x},${element.y}`
+                    element.name = 'cluster';
                 } else {
-                    flattened.push(element);
+                    element.icontype = 'poi';
                 }
+                flattened.push(element);
             });
         }
         return flattened;

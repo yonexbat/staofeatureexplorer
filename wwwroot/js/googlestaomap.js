@@ -78,14 +78,14 @@ export class GoogleStaoMap {
         for (let id of dataMap.keys()) {
             if (!this.markers.has(id)) {
                 let poi = dataMap.get(id);
-                let marker = this.createmarker(poi);
+                let marker = this.createMarker(poi);
                 this.markers.set(id, marker);
             }
         }
 
     }
 
-    createmarker(poi) {
+    createMarker(poi) {
         const icon = createIcon(poi);
         const location = { lat: poi.y, lng: poi.x };
         const label = this.createLabel(poi);
