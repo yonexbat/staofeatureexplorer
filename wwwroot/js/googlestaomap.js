@@ -33,12 +33,14 @@ export class GoogleStaoMap {
         });
 
         this.uiBridge.getGeoCodeButton().addEventListener('click', () => this.geocodeClicked());
-        this.uiBridge.getTagsbutton().addEventListener('click', () => this.getTagsClicked());        
+        this.uiBridge.getTagsbutton().addEventListener('click', () => this.getTagsClicked());
+
+        InitCustomMarker();
     }
 
-    async getTagsClicked(){
-        const res = await this.gisservice.getTags();  
-        this.uiBridge.setResult(JSON.stringify(res));   
+    async getTagsClicked() {
+        const res = await this.gisservice.getTags();
+        this.uiBridge.setResult(JSON.stringify(res));
     }
 
     async geocodeClicked() {
@@ -103,20 +105,32 @@ export class GoogleStaoMap {
     }
 
     createMarker(poi) {
+        /*
         const icon = createIcon(poi);
         const location = { lat: poi.y, lng: poi.x };
         const label = this.createLabel(poi);
-        const marker =  new google.maps.Marker({
+        const marker = new google.maps.Marker({
             position: location,
             label: label,
             icon: icon,
             map: this.map,
         });
-        marker.addListener('click', () => this.markerClicked(poi));
+        marker.addListener('click', () => this.markerClicked(poi));*/
+        var myLatlng = new google.maps.LatLng(poi.y,poi.x);
+        const marker = new CustomMarker(
+            myLatlng, 
+            this.map,
+            {
+                marker_id: '123',
+                htmlContent: 'your_markup_here',
+                color: '#DF1E1E',
+                        tooltip: 'marker tooltp'
+            }
+        );
         return marker;
     }
 
-    createLabel(poi){
+    createLabel(poi) {
         const name = poi.name;
         return {
             text: name,
@@ -128,7 +142,77 @@ export class GoogleStaoMap {
         this.uiBridge.setResult(JSON.stringify(poi));
         const poiInfo = JSON.stringify(poi);
         console.log(`marker clicked ${poiInfo}`);
-        
+
     }
 
+}
+
+
+
+function CustomMarker(latlng, map, args) {
+    this.latlng = latlng;
+    this.args = args;
+    this.setMap(map);
+}
+
+function InitCustomMarker() {
+
+    CustomMarker.prototype = new google.maps.OverlayView();
+
+    CustomMarker.prototype.draw = function () {
+
+        var self = this;
+
+        var div = this.div;
+
+        if (!div) {
+
+            div = this.div = document.createElement('div');
+
+            div.className = 'marker';
+
+            div.style.position = 'absolute';
+
+            //set the values passed in from the creation of the custom marker
+            div.innerHTML = this.args.htmlContent;
+            div.style.color = this.args.color;
+
+            if (typeof (self.args.marker_id) !== 'undefined') {
+                div.dataset.marker_id = self.args.marker_id;
+            }
+
+            //add events to the marker
+
+            google.maps.event.addDomListener(div, "mouseover", function (e) {
+                //do something on mouseover, maybe show some tooltip text
+            })
+
+            google.maps.event.addDomListener(div, "mouseout", function (e) {
+                //do something on mosueout, hide the tooltip text
+            })
+
+
+            var panes = this.getPanes();
+            panes.overlayImage.appendChild(div);
+        }
+
+        var point = this.getProjection().fromLatLngToDivPixel(this.latlng);
+
+        //position the custom marker on the map
+        if (point) {
+            div.style.left = (point.x) + 'px';
+            div.style.top = (point.y) + 'px';
+        }
+    };
+
+    CustomMarker.prototype.remove = function () {
+        if (this.div) {
+            this.div.parentNode.removeChild(this.div);
+            this.div = null;
+        }
+    };
+
+    CustomMarker.prototype.getPosition = function () {
+        return this.latlng;
+    }
 }
