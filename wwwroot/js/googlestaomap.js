@@ -112,6 +112,7 @@ export class GoogleStaoMap {
 
     createMarker(poi) {
         
+        
         const icon = createIcon(poi);
         const location = { lat: poi.y, lng: poi.x };
         const label = this.createLabel(poi);
@@ -130,11 +131,12 @@ export class GoogleStaoMap {
             this.map,
             {
                 marker_id: '123',
-                htmlContent: 'your_markup_here',
+                htmlContent: '<b>Mammiii</b>',
                 color: '#DF1E1E',
                 tooltip: 'marker tooltp'
             }
-        );*/
+        );
+        marker.addListener('click', () => this.markerClicked(poi));*/
 
 
         return marker;
