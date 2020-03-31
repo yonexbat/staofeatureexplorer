@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Simple Map</title>
+    <title>Feature Explorer</title>
     <meta name="viewport" content="initial-scale=1.0">
     <meta charset="utf-8">
     <link rel="stylesheet" href="./css/app.css">
@@ -19,12 +19,18 @@
             <input class="longinput" id="queryfind" type="text" value="T12,CT9,CT1,CT4">
             <label>cluster dist</label>
             <input class="shortinput" id="clusterdist" type="text" value="6">
+            <label>aggregate level</label>
+            <input class="shortinput" id="aggregatelevel" type="text" value="0">
+           
+            <button id="gettagsbutton">tags</button>
+        </div>
+
+        <div id="geocoder">
             <label>query geocode:</label>
             <input class="longinput" id="querygeocode" type="text" value="3400">           
             <button id="querygeocodebutton">geocode (find)</button>
             <label>Num hits:</label>
             <label id="numhits"></label>
-            <button id="gettagsbutton">tags</button>
         </div>
 
         <div id="output">

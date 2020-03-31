@@ -17,8 +17,9 @@ export class GisService {
         const extent = `${lon1}${separator}${lat1}${separator}${lon2}${separator}${lat2}`;
         const tagsEncoded = encodeURIComponent(findobj.tags);
         const clusterdist = findobj.clusterdist;
+        const agglevel = findobj.aggregateLevel;
         
-        var url = `${this.baseurl}/Find?query=${tagsEncoded}&clusterdist=${clusterdist}&lang=en&extent=${extent}&autoexpand=false&maxpois=150&agglevel=0&encoding=UTF-8`;
+        var url = `${this.baseurl}/Find?query=${tagsEncoded}&clusterdist=${clusterdist}&lang=en&extent=${extent}&autoexpand=false&maxpois=150&agglevel=${agglevel}&encoding=UTF-8`;
         var obj = await getJson(url);
 
         if(obj.pois) {

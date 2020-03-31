@@ -3,7 +3,7 @@ import { GisService } from './gisservice.js';
 import { UiBridge } from './uibridge.js';
 import { getJson } from './httpclient.js';
 import { createIcon } from './posticons.js';
-import {InitCustomMarker, CustomMarker} from './custommarker.js';
+import {CreateMarker} from './custommarker.js';
 
 export class GoogleStaoMap {
 
@@ -33,10 +33,13 @@ export class GoogleStaoMap {
             this.mapChanged();
         });
 
+
+        this.uiBridge.getAggregateLevelInputElement().addEventListener('blur', () => {
+            this.mapChanged();
+        });
+
         this.uiBridge.getGeoCodeButton().addEventListener('click', () => this.geocodeClicked());
         this.uiBridge.getTagsbutton().addEventListener('click', () => this.getTagsClicked());
-
-        InitCustomMarker();
     }
 
     async getTagsClicked() {
@@ -73,10 +76,12 @@ export class GoogleStaoMap {
 
         const tags = this.uiBridge.getTagsVal();
         const clusterdist = this.uiBridge.getClusterDistVal();
+        const aggregLevel = this.uiBridge.getAggregateLevelVal();
         const findobj = {
             bounds: bounds,
             tags: tags,
             clusterdist: clusterdist,
+            aggregateLevel: aggregLevel,
         };
 
         const dataMap = await this.gisservice.find(findobj);
@@ -106,7 +111,7 @@ export class GoogleStaoMap {
     }
 
     createMarker(poi) {
-        /*
+        
         const icon = createIcon(poi);
         const location = { lat: poi.y, lng: poi.x };
         const label = this.createLabel(poi);
@@ -116,11 +121,11 @@ export class GoogleStaoMap {
             icon: icon,
             map: this.map,
         });
-        marker.addListener('click', () => this.markerClicked(poi));*/
-
+        marker.addListener('click', () => this.markerClicked(poi));
+       
         /*
         var myLatlng = new google.maps.LatLng(poi.y,poi.x);
-        const marker = new CustomMarker(
+        const marker = CreateMarker (
             myLatlng, 
             this.map,
             {
@@ -130,18 +135,6 @@ export class GoogleStaoMap {
                 tooltip: 'marker tooltp'
             }
         );*/
-
-        var myLatlng = new google.maps.LatLng(poi.y,poi.x);
-        const marker = new CustomMarker (
-            myLatlng, 
-            this.map,
-            {
-                marker_id: '123',
-                htmlContent: 'your_markup_here',
-                color: '#DF1E1E',
-                tooltip: 'marker tooltp'
-            }
-        );
 
 
         return marker;

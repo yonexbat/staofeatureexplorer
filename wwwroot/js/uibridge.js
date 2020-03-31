@@ -24,6 +24,14 @@ export class UiBridge {
         return this.getclusterDistInputElement().value;
     }
 
+    getAggregateLevelInputElement(){
+        return document.getElementById('aggregatelevel');
+    }
+
+    getAggregateLevelVal() {
+        return this.getAggregateLevelInputElement().value;
+    }
+
     getGeocodeVal() {
         return document.getElementById('querygeocode').value;
     }
