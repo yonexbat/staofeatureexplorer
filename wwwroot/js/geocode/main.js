@@ -1,7 +1,7 @@
-import {Poi} from './poi.js';
+import {Pois} from './pois.js';
 import {GisService} from '../gisservice.js';
 
-customElements.define('stao-poi', Poi);
+customElements.define('stao-pois', Pois);
 const gisservice = new GisService();
 
 document.addEventListener("DOMContentLoaded", function(event) { 
@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 async function geocode(){
     var geocodeVal = document.getElementById('querygeocode').value;
     var tags = document.getElementById('tags').value;
-    const pois = gisservice.geocode(geocodeVal, tags);
+    const pois = await gisservice.geocode(geocodeVal, tags);
     const poisElement = document.getElementById('pois');
     poisElement.showPois(pois);
 

@@ -18,21 +18,23 @@
         <input class="longinput" id="tags" type="text" value="T12,CT9,CT1,CT4">
         <label>query geocode:</label>
         <input class="longinput" id="querygeocode" type="text" value="3400">           
-        <button id="querygeocodebutton">geocode (find)</button>
-        <label>Num hits:</label>
-        <label id="numhits"></label>
+        <button id="querygeocodebutton">geocode (find)</button>        
     </div>    
 
     <template id="poiItem">
-        <div>
-            Hello world
+        <div>            
+            <label>name:</label><span name="name"></span>
+            <label>type:</label><span name="type"></span>
+            <label>subtype:</label><span name="subtype"></span>
+            <label>pt:</label><span name="pt"></span>
+            <label>id:</label><span name="id"></span>
         </div>
     </template>
     
-    <stao-poi id="pois"
+    <stao-pois id="pois"
               templateid="poiItem">
 
-    </stao-poi>
+    </stao-pois>
    
 </body>
 
