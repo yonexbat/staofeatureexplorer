@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Feature Explorer Geocode</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="./css/app.css">
+    <script src="./js/geocode/main.js" type="module"></script>
+</head>
+
+<body>
+
+    <h1>Stao Geocoder</h1>
+
+    <div id="geocoder">
+        <label>tags:</label>
+        <input class="longinput" id="tags" type="text" value="T12,CT9,CT1,CT4">
+        <label>query geocode:</label>
+        <input class="longinput" id="querygeocode" type="text" value="3400">           
+        <button id="querygeocodebutton">geocode (find)</button>
+        <label>Num hits:</label>
+        <label id="numhits"></label>
+    </div>    
+
+    <template id="poiItem">
+        <div>
+            Hello world
+        </div>
+    </template>
+    
+    <stao-poi id="pois"
+              templateid="poiItem">
+
+    </stao-poi>
+   
+</body>
+
+</html>
