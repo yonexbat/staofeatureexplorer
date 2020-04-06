@@ -1,4 +1,5 @@
 import { getJson } from "./httpclient.js";
+import { xml2json} from './xml/xml2json.js';
 export class GisService {
 
     constructor() {
@@ -29,6 +30,22 @@ export class GisService {
         }  else {
             throw new Error('Both are undefined, aggregates and poi. Something is wrong');
         }    
+    }
+
+    async getPoiDetailJsonString(id) {
+        var url = `${this.baseurl}/Details?id=${id}`;
+        const res = await getJson(url);
+        const detailsXml = res.details;
+        const xmlParser = new DOMParser();
+        const xmlDoc = xmlParser.parseFromString(detailsXml, "text/xml");
+        const jsonPoiDetail = xml2json(xmlDoc, '  ');
+        return jsonPoiDetail;
+    }
+
+    async getPoiDetail(id) {
+        const jsonString = await this.getPoiDetailJsonString(id);
+        const obj = JSON.parse(jsonString);
+        return obj;
     }
 
     async getTags() {
